@@ -1,0 +1,109 @@
+// base color
+$blue:#324157;
+$light-blue:#3A71A8;
+$red:#C03639;
+$pink: #E65D6E;
+$green: #30B08F;
+$tiffany: #4AB7BD;
+$yellow:#FEC171;
+$panGreen: #30B08F;
+
+$color-secondary: rgb(6, 254, 213);
+$color-white: #fff;
+$color-dark-white: rgb(251, 254, 254);
+$color-black: #000;
+
+$color-base-black: rgb(31, 61, 59);
+$color-light-black: rgb(50, 87, 87);
+$color-extra-light-black: rgb(72, 106, 105);
+
+$color-base-silver: #006d75;
+$color-light-silver: #13c2c2;
+$color-extra-light-silver: #36cfc9;
+
+$color-base-gray: rgb(209, 229, 228);
+$color-light-gray: rgb(228, 240, 241);
+$color-extra-light-gray: rgb(238, 246, 246);
+// sidebar
+$menuText:#f0f3f7;
+$menuActiveText:#409EFF;
+$subMenuActiveText:#f4f4f5; // https://github.com/ElemeFE/element/issues/12951
+
+$menuBg:#304156;
+$menuHover:#263445;
+
+$subMenuBg: #1f2d3d;
+$subMenuHover: #001528;
+
+$sideBarWidth: 135px;
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  menuText: $menuText;
+  menuActiveText: $menuActiveText;
+  subMenuActiveText: $subMenuActiveText;
+  menuBg: $menuBg;
+  menuHover: $menuHover;
+  subMenuBg: $subMenuBg;
+  subMenuHover: $subMenuHover;
+  sideBarWidth: $sideBarWidth;
+}
+
+
+//Transition
+$all-transition: all .3s cubic-bezier(.645,.045,.355,1);
+$fade-transition: opacity 300ms cubic-bezier(0.23, 1, 0.32, 1);
+$fade-linear-transition: opacity 200ms linear;
+$md-fade-transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1) 100ms, opacity 300ms cubic-bezier(0.23, 1, 0.32, 1) 100ms;
+$border-transition-base: border-color .2s cubic-bezier(.645,.045,.355,1);
+$color-transition-base: color .2s cubic-bezier(.645,.045,.355,1);
+
+// Border
+
+$border-width-base: 1px;
+$border-style-base: solid;
+$border-color-base: rgb(191, 217, 215);
+$border-color-hover: rgb(131, 165, 164);
+$border-base: 1px solid rgb(191, 217, 215);
+$border-radius-base: 4px;
+$border-radius-small: 2px;
+$border-radius-circle: 100%;
+
+// Box-shadow
+
+$box-shadow-base: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+$box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
+
+// Fill
+
+$fill-base: #fff;
+
+/**
+* I think element-ui's default theme color is too light for long-term use.
+* So I modified the default color and you can modify it to your liking.
+**/
+
+/* theme color */
+$--color-primary: #1890ff;
+$--color-success: #13ce66;
+$--color-warning: #FFBA00;
+$--color-danger: #ff4949;
+// $--color-info: #1E1E1E;
+
+$--button-font-weight: 200;
+
+// $--color-text-regular: #1f2d3d;
+
+$--border-color-light: #dfe4ed;
+$--border-color-lighter: #e6ebf5;
+
+$--table-border:1px solid#dfe6ec;
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  theme: $--color-primary;
+}
+
+

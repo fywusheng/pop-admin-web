@@ -1,0 +1,25 @@
+$colors : (
+  primary: #409EFF,
+  light-green: #4cd7c0,
+  red: #c5082d,
+  light-red: #e02839,
+  extra-light-red: #f64040,
+  mall-red: #ff6692,
+  black: #4A4A4A,
+  extra-black: #e5e5e5,
+  light-black: #919090,
+  extra-light-black: #a3a2a2,
+  gray: #dad8d8,
+  extra-gray: #e3e3d3,
+  light-gray: #ebe9e9,
+  extra-light-gray: #f4f4f4,
+  checkbox-selected: #4cd7c0,
+  checkbox-font: #fff,
+  checkbox: #dad8d8,
+  checkbox-disabled: #dad8d8,
+  border-color: #eee,
+);
+
+@function colors( $key ) {
+  @return map-get($colors, $key);
+}

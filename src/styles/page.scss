@@ -1,0 +1,407 @@
+@import "variables.scss";
+
+/* icon font path, required */
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+@import "~element-ui/packages/theme-chalk/src/index";
+
+/** 清除内外边距 **/
+body, h1, h2, h3, h4, h5, h6, hr, p,
+blockquote,
+dl, dt, dd, ul, ol, li,
+pre,
+form, fieldset, legend, button, input, textarea,
+th, td,
+img {
+  border: medium none;
+  margin: 0;
+  padding: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-size: 100%;
+}
+
+em {
+  font-style: normal;
+}
+
+/** 重置列表元素 **/
+ul, ol {
+  list-style: none;
+}
+
+/** 重置超链接元素 **/
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+body {
+  margin: 0;
+  font-size: 13px;
+  font-family: Hiragino Sans GB,Helvetica Neue,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+  line-height: 1.5;
+  background: #fff;
+  color: #383838;
+}
+body, html {
+  height: 100%;
+  overflow: hidden;
+}
+
+.el-button--text {
+  padding: 0;
+  font-weight: 400;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.el-pagination {
+  margin-top: 10px;
+  font-weight: normal;
+  text-align: right;
+}
+
+.custom-table {
+  width: 100%;
+  min-height: 70px;
+}
+
+.empty-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .iconfont {
+    margin-right: 10px;
+    font-size: 36px;
+    color: #666;
+  }
+}
+
+.search-wrap {
+  display: flex;
+  flex-direction: row-reverse;
+  padding-right: 5px;
+  &.search-wrap-left {
+    flex-direction: row;
+  }
+  .el-select, .el-date-editor {
+    margin-left: 10px;
+  }
+  & > .el-input {
+    margin-left: 10px;
+    width: 210px;
+  }
+}
+
+.el-button i {
+  font-weight: bold;
+}
+
+.el-form-item__label {
+  font-size: 13px;
+}
+
+.pb-10 {
+  padding-bottom: 10px;
+}
+.mt-5 {
+  margin-top: 5px;
+}
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.ml-10 {
+  margin-left: 10px;
+}
+
+.pb-20 {
+  padding-bottom: 20px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+.main-content {
+  padding: 20px;
+}
+
+.el-tabs {
+  padding-top: 20px;
+}
+
+.content-title {
+  padding-top: 5px;
+  padding-bottom: 15px;
+  margin-bottom: 30px;
+}
+
+.data-form {
+  //width: 440px;
+  padding-left: 30px;
+  .btn-save {
+    width: 105px;
+  }
+  .el-input, .el-textarea, .el-select {
+    width: 305px;
+    &.mini {
+      width: 140px !important;
+    }
+    &.short {
+      width: 200px !important;;
+    }
+    &.middle {
+      width: 400px !important;;
+    }
+    &.long {
+      width: 600px !important;;
+    }
+  }
+  .el-form-item__error {
+    position: relative;
+    display: inline-block;
+    margin-left: 10px;
+  }
+  .el-date-editor--daterange, .el-date-editor--timerange {
+    width: 305px !important;
+  }
+}
+
+.el-input .el-input__inner:focus,
+.el-input .el-textarea__inner:focus {
+  border-color: #ccc;
+}
+
+.el-checkbox__label {
+  font-size: 13px;
+}
+
+.dialog-footer {
+  .el-checkbox {
+    float: left;
+    margin-left: 40px;
+  }
+}
+
+.el-tabs__content {
+  padding-top: 10px;
+}
+
+.el-icon-search {
+  cursor: pointer;
+}
+
+.el-form-item.is-required .el-form-item__label:before {
+  margin-right: -4px;
+  position: relative;
+  left: -8px;
+  top: 3px;
+}
+
+.input-with-select {
+  width: 280px !important;
+  .el-input-group__prepend {
+    padding-left: 0;
+    width: 80px;
+    .el-select {
+      margin-left: 0;
+    }
+  }
+}
+
+.el-button--small {
+  min-width: 105px;
+  text-align: center;
+}
+
+.el-button--text {
+  min-width: inherit;
+}
+
+//.el-button--default {
+//  &:hover {
+//    color: #5a5e66;
+//    background-color: #fff;
+//    border-color: #d8dce5;
+//  }
+//}
+.btn-link {
+  display: inline-block;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: 12px;
+  height: 28px;
+  line-height: 28px;
+  border: 1px solid #d8dce5;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+.pic-desc {
+  display: flex;
+  align-items: center;
+  line-height: 1.5;
+  width: 400px;
+  font-size: 13px;
+  color: #999;
+}
+
+.footer-btn {
+  float: right;
+  margin-top: 10px;
+  &.footer-btn-left {
+    float: left;
+  }
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.disabled {
+  color: #999;
+}
+
+.el-date-editor--daterange {
+  display: inline-block;
+  width: 230px !important;
+}
+
+.el-select {
+  .el-input {
+    width: 100% !important;
+  }
+}
+
+.form-short {
+  &.el-select {
+    width: 120px;
+  }
+  &.el-input {
+    width: 200px;
+  }
+}
+
+.form-mini {
+  &.el-input {
+    width: 120px;
+  }
+}
+
+.flex-column {
+  .el-form-item__content {
+    flex-flow: column;
+    align-items: baseline;
+  }
+}
+
+.border-dashed {
+  padding-bottom: 15px;
+  border-bottom: 1px dashed #ddd;
+}
+
+.el-select {
+  &.short {
+    width: 100px;
+  }
+  &.mini {
+    width: 80px;
+  }
+}
+
+.el-input {
+  &.short {
+    width: 150px;
+  }
+  &.mini {
+    width: 80px;
+  }
+}
+
+.el-pagination__sizes {
+  .el-select {
+    width: 90px;
+  }
+}
+
+.align-r {
+  display: block;
+  margin-left: auto;
+}
+
+.border-t {
+  border-top: 1px solid #ddd;
+}
+
+.pt-20 {
+  padding-top: 20px;
+}
+
+.pb-20 {
+  padding-bottom: 20px;
+}
+
+.pb-10 {
+  padding-bottom: 10px;
+}
+
+.el-date-editor {
+  display: flex;
+}
+
+.el-date-editor-inline {
+  display: inline-block !important;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.dialog-footer {
+  text-align: right;
+}
+.btn-block {
+  display: block;
+  width: 100%;
+}
+.searchbar {
+  border: 1px solid $color-base-gray;
+  padding: 15px;
+  margin: 10px 0;
+  .el-form-item {
+    margin-bottom: 5px;
+  }
+  .input-pos .el-input__inner {
+    cursor: pointer;
+  }
+}
+.flex {
+  .el-form-item__content {
+    display: flex;
+    margin-left: 0!important;
+  }
+}
