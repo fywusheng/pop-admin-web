@@ -74,17 +74,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-      background
-      v-show="totalSize > 10"
-      :page-sizes="[10, 20, 50]"
-      :page-size="pageSize"
-      @size-change="changeSize"
-      @current-change="changePage"
-      layout="total, sizes, slot, jumper, prev, pager, next"
-      :total="totalSize"
-    >
-    </el-pagination>
     <item-template ref="itemTemplate"></item-template>
   </div>
 </template>
@@ -96,10 +85,7 @@ export default {
   name: "",
   data() {
     return {
-      page: 1,
-      pageSize: 20,
       dataList: [],
-      totalSize: 10,
       loading: false,
       searchParams: {
         typeName:this.$route.query.name,
@@ -120,29 +106,13 @@ export default {
     back2Prev(){
       this.$router.back();
     },
-    changePage(pageNo) {
-      this.page = pageNo;
-      this.loadData();
-    },
-    changeSize(pageSize) {
-      this.pageSize = pageSize;
-      this.page = 1;
-      this.loadData();
-    },
     async loadData() {
       this.loading = true;
-      const params = {
-        pageNum: this.page,
-        pageSize: this.pageSize,
-        queryObject:this.searchParams
-      };
-      const result = await post("/dict/getDictItemByPageNo", params);
+      const result = await fetch("/dict/getDictItemByTypeCode", this.searchParams);
       this.loading = false;
       if (result.code == 200) {
         this.$nextTick(() => {
-          this.dataList = result.data.list;
-          this.totalSize = result.data.totalNum * 1;
-          this.pageSize = result.data.limit;
+          this.dataList = result.data;
         });
       } else {
         this.$message.error(result.msg);

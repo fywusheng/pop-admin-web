@@ -1,8 +1,7 @@
-
 <template>
   <div class="main-content">
     <el-page-header @back="back2Prev" content="角色授权管理"></el-page-header>
-    <el-row style="height:20px">
+    <el-row style="height:30px">
       <el-col :span="24"></el-col>
     </el-row>
     <el-row type="flex" class="mb-10" justify="space-between">
@@ -39,6 +38,7 @@
             highlight-current
             :props="defaultProps"
             accordion
+            :default-checked-keys="checkedPermissionKeys"
           >
           </el-tree>
         </div>
@@ -56,18 +56,13 @@ export default {
     this.$loading = true;
     this.loadRoleInfo(this.$route.params);
     this.loadAllPermission();
+    this.loadRolePermission(this.$route.params.id);
     this.$loading = false;
   },
 
   methods: {
     resetChecked() {
-      var that = this;
-      this.checkedPermissionKeys.forEach((i,n) => {
-        var node = that.$refs.tree.getNode(i);
-        if(node.isLeaf){
-          that.$refs.tree.setChecked(node, true);
-        }
-      });
+      this.$refs.tree.setCheckedKeys(this.checkedPermissionKeys);
     },
     back2Prev(){
       this.$router.back();
@@ -85,20 +80,18 @@ export default {
       },
 
       async loadAllPermission(){
-        let result = await post('/oss/permission/menu/listTree',{appCode:'OSS'})
+        let result = await fetch('permission/getPermissionTree',{})
         if(result.code == 200){
           this.data = result.data;
-          this.loadRolePermission(this.$route.params.id);
         }
         else {
           this.$message.error(result.msg);
         }
       },
       async loadRolePermission(roleId){
-        let result = await fetch('/oss/permission/menu/getIdsByRoleId',{roleId:roleId})
+        let result = await fetch('permission/getIdsByRoleId',{roleId:roleId})
         if(result.code == 200){
           this.checkedPermissionKeys = result.data;
-          this.resetChecked();
         }
         else {
           this.$message.error(result.msg);
@@ -107,10 +100,7 @@ export default {
 
       async save() {
         this.sending = true
-        var keys = this.$refs.tree.getCheckedKeys()
-        const halfKeys = this.$refs.tree.getHalfCheckedKeys()
-        keys = keys.concat(halfKeys)
-        const result = await post('/oss/permission/role/grant', {id:this.$route.params.id,permissionIds:keys})
+        const result = await post('/role/grant', {id:this.$route.params.id,permissionIds:this.$refs.tree.getCheckedKeys()})
         this.sending = false
         if (result.code == 200) {
           this.$message.success('角色授权成功！')
@@ -130,7 +120,6 @@ export default {
       roleDesc:'',
       defaultProps: {
         children: "children",
-        id: "id",
         label: "name",
       },
       checkedPermissionKeys:[]

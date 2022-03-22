@@ -4,15 +4,13 @@
     title="新增权限一级菜单"
     width="600px"
     :visible.sync="showDialog">
-    <el-form class="data-form" :model="dataForm" :rules="dataRules" ref="dataForm" label-width="150px" label-position="top">
-      <!-- <el-form-item label="所属业务" prop="bizCode">
+    <el-form class="data-form" :model="dataForm" :rules="dataRules" ref="dataForm" label-width="150px"
+             label-position="top">
+      <el-form-item label="所属业务" prop="bizCode">
         <el-select v-model="dataForm.bizCode" placeholder="请选择所属业务模块..." :disabled="bizDisabed" style="width:100%">
           <el-option v-for="item in bizData" :key="item.code" :label="item.name" :value="item.code">
           </el-option>
         </el-select>
-      </el-form-item> -->
-      <el-form-item label="应用系统/业务线" prop="appBizCode" class="item">
-        <el-cascader v-model="dataForm.appBizCode" :options="bizOptions" :props="bizOptionProps" :disabled="bizDisabed" placeholder="请选择所属应用系统/业务线..." style="width:500px"></el-cascader>
       </el-form-item>
       <el-form-item label="所属父权限菜单" prop="pname" v-if="showType===1">
         <el-input v-model="dataForm.pname" type="input" style="width:100%" disabled></el-input>
@@ -48,19 +46,16 @@
         showDialog: false,
         sending: false,
         showType: 1,
+        typeCode:'DICT5947',
         bizDisabed:false,
-        bizOptionProps: {
-          expandTrigger: 'hover'
-        },
-        bizOptions:[],
+        bizData:[],
         dataForm: {
-          id:'',
           name:'',
           url:'',
           pname:'',
           pid:'',
           remarks:'',
-          appBizCode:[]
+          bizCode:''
         },
         dataRules: {
           name: [{
@@ -68,9 +63,9 @@
             message: '权限菜单名称不能为空，请输入...',
             trigger: 'blur'
           }],
-          appBizCode: [{
+          bizCode: [{
             required: true,
-            message: '应用系统/业务线不能为空，请选择...',
+            message: '业务类型不能为空，请选择...',
             trigger: 'blur'
           }]
         }
@@ -82,41 +77,36 @@
     methods: {
       showAdd(dialogFlag, nodeFlag, data) {
         this.showDialog = dialogFlag
-            this.dataForm.appBizCode = new Array
         this.bizDisabed = false
         if(dialogFlag){
           this.showType = nodeFlag
           if(this.showType==1){
             this.dataForm.pid = data.id
             this.dataForm.pname = data.name
-            this.dataForm.appBizCode[0] = data.appCode
-            this.dataForm.appBizCode[1] = data.bizCode
+            this.dataForm.bizCode = data.bizCode
             this.bizDisabed = true
           }
           else{
             this.dataForm.pid = ''
             this.dataForm.pname = ''
+            this.dataForm.bizCode = ''
           }
         }
-        this.dataForm.id = ''
         this.dataForm.name = ''
         this.dataForm.url = ''
         this.dataForm.remarks = ''
       },
 
      async showEdit(dialogFlag, data){
-        const result = await fetch('/oss/permission/menu/getPermissionById',{id:data.id})
-        this.dataForm.appBizCode = new Array
+        const result = await fetch('/permission/getPermissionById',{id:data.id})
         this.bizDisabed = true
         this.showDialog = dialogFlag
-        console.log(this.dataForm.appBizCode)
         if (result.code == 200) {
             if(result.data.parent&&Object.keys(result.data.parent).length>0){
               this.showType = 1
               this.dataForm.id = result.data.id
               this.dataForm.pid = result.data.pid
-              this.dataForm.appBizCode[0] = result.data.appCode
-              this.dataForm.appBizCode[1] = result.data.bizCode
+              this.dataForm.bizCode = result.data.bizCode
               this.dataForm.pname = result.data.parent.name
               this.dataForm.name = result.data.name
               this.dataForm.url = result.data.url
@@ -126,8 +116,7 @@
               this.showType = 0
               this.dataForm.id = result.data.id
               this.dataForm.pid = 0
-              this.dataForm.appBizCode[0] = result.data.appCode
-              this.dataForm.appBizCode[1] = result.data.bizCode
+              this.dataForm.bizCode = result.data.bizCode
               this.dataForm.name = result.data.name
               this.dataForm.url = ''
               this.dataForm.remarks = result.data.remarks
@@ -136,7 +125,6 @@
         else {
           this.$message.error(result.msg)
         }
-        console.log(JSON.stringify(this.dataForm))
       },
 
       show(dialogFlag){
@@ -144,9 +132,9 @@
       },
 
       async loadBizData() {
-        const result = await fetch('/biz/listBizByApp',{})
+        const result = await fetch('/biz/list',{})
         if (result.code == 200) {
-          this.bizOptions = result.data
+          this.bizData = result.data
         } 
         else {
           this.$message.error(result.msg)
@@ -156,9 +144,7 @@
         this.$refs.dataForm.validate(async(valid) => {
           if (valid) {
             this.sending = true
-            this.dataForm.appCode = this.dataForm.appBizCode[0]
-            this.dataForm.bizCode = this.dataForm.appBizCode[1]
-            var url = this.dataForm.id?'/oss/permission/menu/edit':'/oss/permission/menu/add'
+            var url = this.dataForm.id?'/permission/edit':'/permission/add'
             const result = await post(url,this.dataForm)
             this.sending = false
             if (result.code == 200) {

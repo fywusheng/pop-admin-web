@@ -2,12 +2,14 @@
 <div class="main-content">
     <el-row class="mb-2">
       <el-form :inline="true">
-      <el-form-item label="应用系统/业务线" prop="appBizCode" class="item">
-        <el-cascader v-model="searchParams.appBizCode" :options="bizOptions" :props="bizOptionProps" placeholder="请选择所属应用系统/业务线..." style="width:450px"></el-cascader>
+      <el-form-item>
+        <el-select v-model="searchParams.bizCode" placeholder="请选择业务模块..." style="width:200px">
+          <el-option v-for="item in bizData" :key="item.code" :label="item.name" :value="item.code"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
-          <el-button type="primary" icon="el-icon-search" @click="loadData" size="mini">查询</el-button>
-          <el-button type="default" icon="el-icon-circle-plus-outline" @click="add(0)" size="mini">新增一级菜单</el-button>
+          <el-button type="primary" @click="loadData" size="small">查询(Q)</el-button>
+          <el-button type="default" @click="add(0)" size="small">新增一级菜单(A)</el-button>
       </el-form-item>
       </el-form>
     </el-row>
@@ -32,11 +34,6 @@
       prop="bizCode"
       label="所属业务"
       width="100px">
-    </el-table-column>
-    <el-table-column
-      prop="displaySort"
-      label="排序"
-      width="80px">
     </el-table-column>
     <el-table-column
       prop="modifier"
@@ -66,11 +63,7 @@
   export default {
     data(){
         return {
-          bizOptionProps: {
-            checkStrictly: true,
-            expandTrigger: 'hover'
-          },
-          bizOptions:[],
+          bizData:[],
           searchParams: {},
           loading:false,
           tableData:[]
@@ -85,24 +78,17 @@
     },
     methods:{
       async loadBizData() {
-        const result = await fetch('/biz/listBizByApp',{})
+        const result = await fetch('/biz/list',{})
         if (result.code == 200) {
-          this.bizOptions = result.data
-        } 
+          this.bizData = result.data
+        }
         else {
           this.$message.error(result.msg)
         }
       },
       async loadData() {
         this.loading = true
-        if(this.searchParams.appBizCode&&this.searchParams.appBizCode.length==2){
-          this.searchParams.appCode = this.searchParams.appBizCode[0]
-          this.searchParams.bizCode = this.searchParams.appBizCode[1]
-        }
-        else if(this.searchParams.appBizCode&&this.searchParams.appBizCode.length==1){
-          this.searchParams.appCode = this.searchParams.appBizCode[0]
-        }
-        const result = await post('/oss/permission/menu/listTree',this.searchParams);
+        const result = await fetch('permission/getPermissionTree',this.searchParams);
         if (result.code == 200) {
           this.tableData = result.data;
           this.loading = false
@@ -125,7 +111,7 @@
           type: 'warning'
         }).then(async() => {
           let param = {id:row.id}
-          const result = await fetch('/oss/permission/menu/deletePermissionById',param)
+          const result = await fetch('permission/deletePermissionById',param)//deletePermission(row.id)
           if (result.code == 200) {
             this.$message.success('删除成功!')
             this.loadData()
