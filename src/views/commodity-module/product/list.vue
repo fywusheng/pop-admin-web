@@ -3,7 +3,7 @@
     <el-tabs v-model="activeType" type="card" @tab-click="handleClick" style="padding-top:0">
       <el-tab-pane label="销售中" name="1" :disabled="disabled"></el-tab-pane>
       <el-tab-pane label="已下架" name="2" :disabled="disabled"></el-tab-pane>
-      <el-tab-pane label="商品池" name="3" :disabled="disabled"></el-tab-pane>
+      <el-tab-pane label="商品库" name="3" :disabled="disabled"></el-tab-pane>
     </el-tabs>
     <el-form :inline="true">
     <el-row class="mb-2">
@@ -118,11 +118,11 @@
       </el-table-column-->
       <el-table-column prop="" label="操作" align="center" width="280px">
         <template slot-scope="scope">
-          <el-button size="mini" v-if="activeType==4" @click="forward2SpecPage(scope.row)">SKU管理</el-button>
-          <el-button size="mini" v-if="activeType==2||activeType==4" icon="el-icon-edit" @click="forward2ProductAddPage(scope.row)">编辑</el-button>
+          <el-button size="mini" v-if="activeType==3" @click="forward2SpecPage(scope.row)">SKU管理</el-button>
+          <el-button size="mini" v-if="activeType==2||activeType==3" icon="el-icon-edit" @click="forward2ProductAddPage(scope.row)">编辑</el-button>
           <el-button size="mini" v-if="activeType==1" icon="el-icon-bottom" @click="stopSingleSelection(scope.row)">下架</el-button>
           <el-button size="mini" v-if="activeType==2" icon="el-icon-top" @click="publishSingleSelection(scope.row)">上架</el-button>
-          <el-button size="mini" v-if="activeType==4" :disabled="scope.row.auditState!=2" icon="el-icon-success" @click="audit(scope.row)">审核</el-button>
+          <el-button size="mini" v-if="activeType==3" :disabled="scope.row.auditState!=2" icon="el-icon-success" @click="audit(scope.row)">审核</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -152,7 +152,7 @@ export default {
       totalCount: 20,
       loading: false,
       disabled: false,
-      activeType:'4',
+      activeType:'3',
       brandOptions:[],
       categoryOptions:[],
       searchParams: {
