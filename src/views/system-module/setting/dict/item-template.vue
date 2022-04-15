@@ -7,7 +7,7 @@
     <el-form class="data-form" :model="itemForm" :rules="dataRules" ref="itemForm" label-width="150px"
              label-position="right">
       <el-form-item label="数据类型" prop="name">
-        <el-input v-model="itemForm.name" disabled="true" maxlength="32" style="width:100%"></el-input>
+        <el-input v-model="itemForm.name" :disabled="true" maxlength="32" style="width:100%"></el-input>
       </el-form-item>
       <el-form-item label="数据参数名" prop="label">
         <el-input v-model="itemForm.label" placeholder="请输入数据显示名称..." maxlength="32" style="width:100%"></el-input>
@@ -24,9 +24,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="show(false)">取 消</el-button>
-      <el-button type="success" :loading="sending" :disabled="sending" @click="save">{{sending ?
-        '正在保存...':'确 定'}}
-      </el-button>
+      <el-button type="success" :loading="sending" :disabled="sending" @click="save">{{sending ? '正在保存...':'确 定'}}</el-button>
     </div>
   </el-dialog>
 </template>
@@ -42,11 +40,11 @@ import { fetch, post } from "@/utils/http-client";
         sending: false,
         showType: 0,
         itemForm: {
-          name: this.$route.params.name,
+          name: '',
           label: '',
           value: '',
           description: '',
-          typeCode:this.$route.params.code
+          typeCode:''
         },
         dataRules: {
           name: [{required: true,message: '请输入数据类型...', trigger: 'blur'}],
@@ -64,30 +62,37 @@ import { fetch, post } from "@/utils/http-client";
     methods: {
       show(flag,data) {
         this.showDialog = flag
-        this.$nextTick(() => {
-         this.$refs.itemForm.resetFields()
-         this.itemForm.name = data.typeName
-         this.itemForm.typeCode = data.typeCode
-        })
+        if(flag&&data){
+          this.$nextTick(() => {
+          this.$refs.itemForm.resetFields()
+          this.itemForm.name = data.typeName
+          this.itemForm.typeCode = data.typeCode
+          if(data.id){
+            this.loadData(data.id)
+          }
+          else{
+            this.itemForm.id = null
+          }
+          })
+        }
       },
       async loadData(id) {
-        // const result = await get(id)
-        // if (result.code == 200) {
-        //   const dataForm = {
-        //     id: result.data.id,
-        //     realName: result.data.realName,
-        //     telphone: result.data.telphone
-        //   }
-        //   //this.dataForm = dataForm;
-        // } else {
-        //   this.$message.error(result.msg)
-        // }
+        const result = await fetch('/dict/getDictItemById',{id:id})
+        if (result.code == 200) {
+          this.itemForm.id = result.data.id
+          this.itemForm.label = result.data.label
+          this.itemForm.value = result.data.value
+          this.itemForm.description = result.data.description
+        } else {
+          this.$message.error(result.msg)
+        }
       },
       async save() {
         this.$refs.itemForm.validate(async(valid) => {
           if (valid) {
             this.sending = true
-            const result = await post('/dict/addDictItem',this.itemForm)
+            let url = this.itemForm.id?'/dict/editDictItem':'/dict/addDictItem'
+            const result = await post(url,this.itemForm)
             this.sending = false
             if (result.code == 200) {
               this.show(false)

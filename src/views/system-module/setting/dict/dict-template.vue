@@ -49,31 +49,30 @@ import { fetch, post } from "@/utils/http-client";
       show(flag, data) {
         this.showDialog = flag;
         if (flag && data) {
-         // this.loadData(data.id)
+         this.loadData(data.id)
         }
         this.$nextTick(() => {
          this.$refs.dataForm.resetFields()
         })
       },
       async loadData(id) {
-        // const result = await get(id)
-        // if (result.code == 200) {
-        //   const dataForm = {
-        //     id: result.data.id,
-        //     realName: result.data.realName,
-        //     telphone: result.data.telphone
-        //   }
-        //   //this.dataForm = dataForm;
-        // } else {
-        //   this.$message.error(result.msg)
-        // }
+        const result = await fetch('/dict/getDictById',{id:id})
+        if (result.code == 200) {
+          this.dataForm.id = result.data.id
+          this.dataForm.name = result.data.name
+          this.dataForm.description = result.data.description
+        } 
+        else {
+          this.$message.error(result.msg)
+        }
       },
       async save() {
         this.$refs.dataForm.validate(async(valid) => {
           if (valid) {
             this.sending = true
             let params = Object.assign({}, this.dataForm)
-            const result = await post('/dict/addDict',params)
+            let url = this.dataForm.id?'/dict/editDict':'/dict/addDict'
+            const result = await post(url,params)
             this.sending = false
             if (result.code == 200) {
               this.show(false)

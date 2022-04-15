@@ -32,7 +32,6 @@
       :data="dataList"
       size="mini"
       v-loading="loading"
-      @expand-change="loadSubOption"
     >
       <div slot="empty" class="empty-wrap">
         <i class="iconfont icon-tishi"></i><span>暂无数据</span>
@@ -56,13 +55,14 @@
                 :active-value="0"
                 inactive-color="#909399"
                 :inactive-value="1"
+                @change="resetting(scope.row)"
               >
         </el-switch>
         </template>
       </el-table-column>
       <el-table-column prop="" label="操作" align="center" width="240px">
         <template slot-scope="scope">
-          <el-link icon="el-icon-edit-outline" :underline="false"
+          <el-link icon="el-icon-edit-outline" :underline="false" @click="edit(scope.row)"
             >编辑&nbsp;</el-link
           >
           <el-link
@@ -122,8 +122,22 @@ export default {
       this.$refs.itemTemplate.show(true,this.searchParams);
     },
     edit(row) {
+      row.typeName = this.searchParams.typeName
+      row.typeCode = this.searchParams.typeCode
+      //console.log('TEST2: ' + row)
       this.$refs.itemTemplate.show(true, row);
     },
+
+    async resetting(row) {
+          const result = await post('/dict/resettingDictItemState',row);
+          if (result.code == 200) {
+            this.$message.success("重置启用状态成功!");
+            this.loadData();
+          } else {
+            this.$message.error(result.msg);
+          }
+    },
+
     del(row) {
       this.$confirm("确定要删除该数据吗?", "提示", {
         confirmButtonText: "确定",
