@@ -12,7 +12,7 @@
         </el-form-item>
         <el-form-item label="">
           <el-input
-            v-model="searchParams.code"
+            v-model="searchParams.userMobile"
             placeholder="请输入会员手机号码..."
             clearable
             size="mini"

@@ -4,7 +4,7 @@
       <el-form :inline="true">
         <el-form-item label="">
           <el-input
-            v-model="searchParams.orderCode"
+            v-model="searchParams.orderId"
             placeholder="请输入订单编号..."
             clearable
             size="mini"
@@ -12,7 +12,7 @@
         </el-form-item>
         <el-form-item label="">
           <el-input
-            v-model="searchParams.mobile"
+            v-model="searchParams.phone"
             placeholder="请输入会员手机号码..."
             clearable
             size="mini"
@@ -170,12 +170,15 @@ export default {
       this.loading = true
       const params = {
         pageNum: this.pageNo,
-        pageSize: this.pageSize
+        pageSize: this.pageSize,
+        queryObject: this.searchParams
       }
       Object.keys(this.searchParams).forEach((key) => {
-        params[key] = this.searchParams[key]
+        if(this.searchParams[key] === ''){
+          delete params.queryObject[key]
+        }
       })
-      const result = await fetch('/aftersale/returns/listByPageNo', params)
+      const result = await post('/aftersale/returns/listByPageNo', params)
       this.loading = false
       if (result.code == 200) {
         this.$nextTick(() => {

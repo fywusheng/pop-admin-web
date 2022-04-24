@@ -4,7 +4,7 @@
       <el-form :inline="true">
         <el-form-item label="">
           <el-input
-            v-model="searchParams.name"
+            v-model="searchParams.orderId"
             placeholder="请输入订单编号..."
             clearable
             size="mini"
@@ -12,7 +12,7 @@
         </el-form-item>
         <el-form-item label="">
           <el-input
-            v-model="searchParams.code"
+            v-model="searchParams.phone"
             placeholder="请输入会员手机号码..."
             clearable
             size="mini"
@@ -116,6 +116,11 @@ export default {
         pageSize: this.pageSize,
         queryObject:this.searchParams
       }
+      Object.keys(this.searchParams).map(key => {
+        if(this.searchParams[key] === ''){
+          delete params.queryObject[key]
+        }
+      })
       const result = await post('/aftersale/refund/listByPageNo', params)
       this.loading = false
       if (result.code == 200) {
